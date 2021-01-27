@@ -1,9 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
-import { createApp } from 'vue'
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 import './index.css'
 
-createApp(App).mount('#app')
+Vue.use(VueAxios, axios)
 Vue.config.productionTip = false
 
 new Vue({
