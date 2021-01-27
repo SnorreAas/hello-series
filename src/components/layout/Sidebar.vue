@@ -13,8 +13,13 @@ export default {
         {name: 'Top Rated Series'},
         {name: 'Genres', title: true},
         {name: 'Action'},
+        {name: 'Comedy'},
+        {name: 'Crime'},
         {name: 'Drama'},
-        {name: 'Sci-Fi'},
+        {name: 'Horror'},
+        {name: 'Romance'},
+        {name: 'Science-Fiction'},
+        {name: 'Thriller'},
       ]
     }
   },
@@ -39,9 +44,10 @@ export default {
   .Sidebar
     height: 100%
     width: 320px
-    // position: absolute
-    // top: 0
-    // left: 0
+    @media screen and (max-width: 925px)
+      position: absolute
+      top: 0
+      left: -320px
     .Logo
       width: 100%
       height: 100px
