@@ -1,4 +1,12 @@
 # hello-series
+Hello Series is a page used to browse for series fetched from `tvmaze open api`.
+
+This project was built in 24 hours during a "ad-hoc stress test".
+
+The stack consists of:
+* Vue.js
+* TailWind 2
+* Sass/ SCSS
 
 ## Project setup
 ```
