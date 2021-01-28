@@ -29,6 +29,9 @@ export default {
     }
   },
   methods: {
+    sendOverlayData(data) {
+      this.$emit('card', data)
+    },
     sendSearch() {
       this.$emit('search', this.searchString)
     },
@@ -46,20 +49,23 @@ export default {
 <template>
   <main>
     <div class="header">
-      <h1>{{activeFilter}}</h1>
-      <input placeholder="Search for series..." v-model="searchString" @input="sendSearch"/>
+      <h1 class="text-blue-400">{{activeFilter}}</h1>
+      <input placeholder="Search for series..." v-model="searchString" @input="sendSearch" @keydown.enter.prevent="sendSearch"/>
     </div>
     <SeriesGrid>
       <div 
         v-for="(item, index) in seriesToShow"
         :key="index"
+        class="cursor-pointer"
       >
         <Card
-          v-if="apiData[0]"
-          :name="apiData[0][index].name"
-          :image="apiData[0][index].image.original"
-          :genres="apiData[0][index].genres"
-          :rating="apiData[0][index].rating.average"
+          v-if="apiData && apiData[index]"
+          :name="apiData[index].name"
+          :image="apiData[index].image"
+          :genres="apiData[index].genres"
+          :rating="apiData[index].rating.average"
+          :api-data="apiData[index]"
+          @card="sendOverlayData"
         />
       </div>
     </SeriesGrid>
@@ -74,12 +80,19 @@ export default {
       </button>
     </div>
     <div
+      v-else-if="seriesToShow > dataLength && dataLength !== 0"
+      class="mt-20 text-center"
+    >
+      <p class="text-white">
+        You have reached the end!
+      </p>
+    </div>
+    <div
       v-else
       class="mt-20 text-center"
     >
-      
-      <p>
-        You have reached the end!
+      <p class="text-white">
+        Are you sure series with name: <span class="text-blue-400">{{searchString}}</span> exists?
       </p>
     </div>
   </main>
@@ -89,14 +102,18 @@ export default {
   main
     display: block
     width: 100%
-    padding-left: 50px
+    padding-left: 15px
+    padding-right: 15px
+    position: relative
+    @media screen and (max-width: 889px)
+      margin: 0 auto
+      max-width: 800px
 
     .header
-      padding: 24px 30px 24px 0
+      padding: 24px 15px
       display: flex
       justify-content: space-between
       h1
-        color: #fff
         font-size: 20px
         margin: auto 0
       input
@@ -106,5 +123,6 @@ export default {
         border-radius: 4px
         color: #fff
         padding: 0 20px
+
 
 </style>

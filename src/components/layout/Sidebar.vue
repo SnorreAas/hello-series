@@ -8,7 +8,7 @@ export default {
   },
   data() {
     return {
-      test: [
+      menuData: [
         {name: 'Discover', title: true},
         {name: 'Top Rated Series'},
         {name: 'Genres', title: true},
@@ -20,7 +20,14 @@ export default {
         {name: 'Romance'},
         {name: 'Science-Fiction'},
         {name: 'Thriller'},
+        {name: 'Remove filters', title: true},
+        {name: 'Browse all'},
       ]
+    }
+  },
+  computed: {
+    computedImage() {
+      return `${require('../../assets/popcorn-3.png')}`
     }
   },
   methods: {
@@ -34,15 +41,15 @@ export default {
 <template>
   <div class="Sidebar">
     <div class="Logo">
-      <h1 @click="sendData('Browse all')">Hello Series</h1>
+      <div class="image" @click="sendData('Browse all')" :style="{backgroundImage: 'url('+ computedImage +')'}"></div>
     </div>
-    <MenuList @clicked="sendData" :list-data="test" />
+    <MenuList @clicked="sendData" :list-data="menuData" />
   </div>
 </template>
 
 <style lang="sass" scoped>
   .Sidebar
-    height: 100%
+    height: 100vh
     width: 320px
     @media screen and (max-width: 925px)
       position: absolute
@@ -51,13 +58,17 @@ export default {
     .Logo
       width: 100%
       height: 100px
-      padding-left: 42px
+      padding-left: 22px
       padding-top: 20px
-      margin-bottom: 20px
+      margin-bottom: 50px
       border-right: 1px solid #567283
-      h1
-        color: #fff
-        font-size: 26px
+      .image
+        width: 180px
+        height: 87px
+        background-size: cover
+        background-repeat: no-repeat
+        background-position: center center
         cursor: pointer
+
 
 </style>

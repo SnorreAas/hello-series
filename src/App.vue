@@ -2,22 +2,30 @@
 <script>
 import Sidebar from './components/layout/Sidebar'
 import Main from './components/layout/Main'
+import InfoOverlay from './components/ui/InfoOverlay'
+
 export default {
   name: 'App',
   components: {
     Sidebar,
-    Main
+    Main,
+    InfoOverlay
   },
   data() {
     return {
       activeFilter: 'Browse all',
       apiData: [],
-      searchString: ''
+      searchString: '',
+      overlayData: []
     }
   },
   methods: {
+    setOverlaydata(data) {
+      this.overlayData = data
+    },
     setSearchString(value) {
       this.searchString = value
+      this.apiData = []
       this.fetchApiData(this.apiData, this.activeFilter, value)
     },
     resetSearchString() {
@@ -27,25 +35,26 @@ export default {
     },
     setactiveFilter(value) {
       this.activeFilter = value
+      this.apiData = []
       this.fetchApiData(this.apiData, this.activeFilter)
     },
     fetchApiData(array, filter, search) {
-      // TODO: change this so it checks if activeFilter is set or
       let apiString = '' 
       if(search) {
         apiString = `http://api.tvmaze.com/search/shows?q=${this.searchString}`
         this.axios.get(apiString)
         .then (function(response){
-          // for (var i = 0; i < response.data.length; i++) {
-          //   var id = Object.keys(response.data)[i]
-          //   if(response.data[id].genre.includes(filter)) {
-          //     console.log("Match found")
-          //   }
-          // }
-          console.log(response.data)
-          // console.log(search)
-          if(response && response.data && response.data[0]) {
-            array.push(response.data)
+          if(filter !== 'Browse all') {
+            for (var i = 0; i < response.data.length; i++) {
+              if(response.data[i].show.genres.includes(filter)) {
+                array.push(response.data[i].show)
+              }
+            }
+          }
+          else {
+            for (var j = 0; j < response.data.length; j++) {
+              array.push(response.data[j].show)
+            }
           }
         })
       }
@@ -53,22 +62,28 @@ export default {
         apiString = `http://api.tvmaze.com/shows`
         this.axios.get(apiString)
         .then (function(response){
-          // for (var i = 0; i < response.data.length; i++) {
-          //   var id = Object.keys(response.data)[i]
-          //   if(response.data[id].genre.includes(filter)) {
-          //     console.log("Match found")
-          //   }
-          // }
-          console.log(filter)
-          console.log(response.data)
-          array.push(response.data)
+          if(filter !== 'Browse all') {
+            for (var i = 0; i < response.data.length; i++) {
+              var id = Object.keys(response.data)[i]
+              if(response.data[id].genres.includes(filter)) {
+                array.push(response.data[id])
+              }
+            }
+          }
+          else {
+            for (var j = 0; j < response.data.length; j++) {
+              var key = Object.keys(response.data)[j]
+              array.push(response.data[key])
+            }
+          }
         })
       }
     }
   },
-  // mounted() {
-  //   this.fetchApiData(this.apiData, this.activeFilter)
-  // }
+  mounted() {
+    // Load initial set of data
+    this.fetchApiData(this.apiData, this.activeFilter, this.searchString)
+  }
 }
 </script>
 
@@ -79,9 +94,11 @@ export default {
       <Main 
         :active-filter="activeFilter" 
         :api-data="apiData"
-        :data-length="apiData && apiData[0] ? apiData[0].length : 0"
-        @search="setSearchString" 
+        :data-length="apiData.length"
+        @search="setSearchString"
+        @card="setOverlaydata"
       />
+      <InfoOverlay :data="overlayData" />
     </div>
   </div>
 </template>
