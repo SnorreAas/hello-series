@@ -52,7 +52,7 @@ export default {
         </p>
       </div>
     </div>
-    <div class="rating"><p>{{rating}}</p></div>
+    <div v-if="rating" class="rating"><p>{{rating}}</p></div>
     <div class="open-overlay" @click="openOverlay(apiData)" />
   </div>
 </template>

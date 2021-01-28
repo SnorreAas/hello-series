@@ -10,7 +10,7 @@ export default {
     return {
       menuData: [
         {name: 'Discover', title: true},
-        {name: 'Top Rated Series'},
+        {name: 'Top Rated Series', disabled: true},
         {name: 'Genres', title: true},
         {name: 'Action'},
         {name: 'Comedy'},

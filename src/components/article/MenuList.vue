@@ -10,7 +10,10 @@ export default {
   methods: {
     sendData(value) {
       this.$emit('clicked', value)
-    }
+    },
+    errorMsg(msg) {
+      alert(msg)
+    },
   }
 }
 </script>
@@ -24,10 +27,10 @@ export default {
     >
       <hr v-if="item.title && index > 1" />
       <p class="title" v-if="item.title">
-          {{item.name}}
-        </p>
+        {{item.name}}
+      </p>
       <div v-else class="MenuList__item__wrapper">
-        <button @click="sendData(item.name)">
+        <button @click=" !item.disabled ? sendData(item.name) : errorMsg('This feature is coming soon')" :title="item.disabled ? 'This option is coming soon' : ''">
           {{item.name}}
         </button>
       </div>
