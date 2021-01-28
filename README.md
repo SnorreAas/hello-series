@@ -6,7 +6,7 @@ This project was built in 24 hours during a "ad-hoc stress test".
 The stack consists of:
 * Vue.js
 * TailWind 2
-* Sass/ SCSS
+* Sass/ Scss
 
 ## Project setup
 ```
